@@ -24,3 +24,31 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: "cron(0 * * * ? *)"
+  FailureAlarm:
+    Type: "AWS::CloudWatch::Alarm"
+    Properties:
+      AlarmActions:
+        -
+          Ref: AlertSnsTopic
+      ComparisonOperator: "GreaterThanThreshold"
+      EvaluationPeriods: 8
+      Period: 3600 # 1 hour
+      Statistic: "Sum"
+      Threshold: 1
+      Namespace: "AWS/Lambda"
+      Dimensions:
+        -
+          Name: FunctionName
+          Value:
+            Ref: Lambda
+      MetricName: "Errors"
+      TreatMissingData: "breaching"
+      Unit: "Count"
+  AlertSnsTopic:
+    Type: "AWS::SNS::Topic"
+    Properties:
+      TopicName: "SkillCappedFetcherNotifications"
+      Subscription:
+        -
+          Endpoint: "shepherdjerred@gmail.com"
+          Protocol: "email"
