@@ -23,7 +23,7 @@ Resources:
         ScheduleEventSource:
           Type: Schedule
           Properties:
-            Schedule: "cron(0 * * * ? *)"
+            Schedule: "cron(*/10 * * * ? *)"
   FailureAlarm:
     Type: "AWS::CloudWatch::Alarm"
     Properties:
